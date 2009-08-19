@@ -1,0 +1,21 @@
+checking:
+  id: 1
+  user_id: 1
+  account_type: Checking
+  balance: 2355.01
+  institution: Utah Power Credit Union
+  name: UPLECU - Checking
+savings:
+  id: 2
+  user_id: 1
+  account_type: Savings
+  balance: 25.00
+  institution: Utah Power Credit Union
+  name: UPLECU - Savings
+cc:
+  id: 3
+  user_id: 1
+  account_type: Credit Card
+  balance: 9000
+  institution: Utah Power Credit Union
+  name: UPLECU - Visa Platinum

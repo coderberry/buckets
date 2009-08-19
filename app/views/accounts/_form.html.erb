@@ -1,0 +1,26 @@
+<table class="form">
+  <tr>
+    <td class="label">Account Type:</td>
+    <td><%= f.select(:account_type, Account::TYPES, {:include_blank => true}) %></td>
+    <td class="error"><%= @account.errors ? @account.errors.on(:account_type) : "" %></td>
+  </tr>
+  <tr>
+    <td class="label">Initial Balance:</td>
+    <td><%= f.text_field :balance, :value => number_to_currency(@account.balance || 0),:onChange => "toCurrency(this)" %></td>
+    <td class="error"><%= @account.errors ? @account.errors.on(:balance) : "" %></td>
+  </tr>
+  <tr>
+    <td class="label">Bank / Institution:</td>
+    <td><%= f.text_field :institution %></label></td>
+    <td class="error"><%= @account.errors ? @account.errors.on(:institution) : "" %></td>
+  </tr>
+  <tr>
+    <td class="label">Name:</td>
+    <td><%= f.text_field :name %></td>
+    <td class="error"><%= @account.errors ? @account.errors.on(:name) : "" %></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><%= f.submit submit_label %></td>
+  </tr>
+</table>

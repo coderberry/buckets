@@ -1,0 +1,12 @@
+<div class="sub_page">
+
+<h1>New Paycheck</h1>
+<h3 class="description">Enter all required fields below.</h3>
+
+<%= error_messages_for :paycheck %>
+
+<% form_for :paycheck, :url => paychecks_path do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f, :submit_label => "Create" } %>
+<% end %>
+
+</div>

@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  category_id: 1
+  name: MyString
+  balance: 9.99
+  account_id: 1
+  bucket_type: MyString
+
+two:
+  category_id: 1
+  name: MyString
+  balance: 9.99
+  account_id: 1
+  bucket_type: MyString

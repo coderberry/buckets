@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  email: cavneb@gmail.com
+  password: aubr33
+  first_name: Eric
+  last_name: Berry
+  username: cavneb
+
+two:
+  email: aubree.berry@gmail.com
+  password: 111385
+  first_name: Aubree
+  last_name: Berry
+  username: darlingchiz

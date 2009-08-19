@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user_id: 1
+  amount: 9.99
+  cleared: false
+  name: MyString
+  ref: MyString
+  date_of_transaction: 2008-03-04
+  transaction_type: MyString
+
+two:
+  user_id: 1
+  amount: 9.99
+  cleared: false
+  name: MyString
+  ref: MyString
+  date_of_transaction: 2008-03-04
+  transaction_type: MyString

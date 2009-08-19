@@ -1,0 +1,8 @@
+one:
+  id: 1
+  name: Eric's First Paycheck
+  user_id: 1
+two:
+  id: 2
+  name: Eric's Second Paycheck
+  user_id: 1

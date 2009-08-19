@@ -1,0 +1,831 @@
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (2.6ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (2.7ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateUsers (1)
+  [4;36;1mSQL (2.8ms)[0m   [0;1mCREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar(255), "email" varchar(255), "first_name" varchar(255), "last_name" varchar(255), "hashed_password" varchar(255), "salt" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (2.6ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('1')[0m
+Migrating to CreateIncomes (2)
+  [4;36;1mSQL (2.4ms)[0m   [0;1mCREATE TABLE "incomes" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "receive_date" date, "amount" decimal(8,2) DEFAULT 0, "description" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (2.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('2')[0m
+Migrating to CreateDistributionPlans (3)
+  [4;36;1mSQL (3.3ms)[0m   [0;1mCREATE TABLE "distribution_plans" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "user_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (2.6ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('3')[0m
+Migrating to CreateDistributionPlanDetails (4)
+  [4;36;1mSQL (2.8ms)[0m   [0;1mCREATE TABLE "distribution_plan_details" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "distribution_plan_id" integer, "amount" decimal(8,2) DEFAULT 0, "bucket_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (2.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('4')[0m
+Migrating to CreateCategories (5)
+  [4;36;1mSQL (3.1ms)[0m   [0;1mCREATE TABLE "categories" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "user_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (2.7ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('5')[0m
+Migrating to CreateBuckets (6)
+  [4;36;1mSQL (2.9ms)[0m   [0;1mCREATE TABLE "buckets" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "category_id" integer, "name" varchar(255), "balance" decimal(8,2) DEFAULT 0, "account_id" integer, "bucket_type" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (2.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('6')[0m
+Migrating to CreateLedgers (7)
+  [4;36;1mSQL (3.4ms)[0m   [0;1mCREATE TABLE "ledgers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "account_id" integer, "amount" decimal(8,2) DEFAULT 0, "cleared" boolean DEFAULT 'f', "name" varchar(255), "ref" varchar(255), "date_of_transaction" date, "transaction_type" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (2.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('7')[0m
+Migrating to CreateLedgerToBuckets (8)
+  [4;36;1mSQL (3.1ms)[0m   [0;1mCREATE TABLE "ledger_to_buckets" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "amount" decimal, "bucket_id" integer, "ledger_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (2.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('8')[0m
+Migrating to CreateAccounts (9)
+  [4;36;1mSQL (3.2ms)[0m   [0;1mCREATE TABLE "accounts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "account_type" varchar(255), "balance" decimal(8,2) DEFAULT 0, "institution" varchar(255), "name" varchar(255), "user_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (2.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('9')[0m
+Migrating to CreatePaychecks (10)
+  [4;36;1mSQL (3.4ms)[0m   [0;1mCREATE TABLE "paychecks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "name" varchar(255), "amount" decimal(8,2) DEFAULT 0, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (2.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('10')[0m
+Migrating to CreatePaycheckToAccounts (11)
+  [4;36;1mSQL (2.7ms)[0m   [0;1mCREATE TABLE "paycheck_to_accounts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "account_id" integer, "paycheck_id" integer, "amount" decimal(8,2) DEFAULT 0, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (2.6ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('11')[0m
+Migrating to CreatePaycheckToBuckets (12)
+  [4;36;1mSQL (3.4ms)[0m   [0;1mCREATE TABLE "paycheck_to_buckets" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "paycheck_id" integer, "bucket_id" integer, "amount" integer DEFAULT 0, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (2.6ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('12')[0m
+  [4;36;1mSQL (0.9ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.7ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("accounts")[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("buckets")[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("categories")[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("distribution_plan_details")[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mPRAGMA index_list("distribution_plans")[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("incomes")[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("ledger_to_buckets")[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("ledgers")[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("paycheck_to_accounts")[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("paycheck_to_buckets")[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mPRAGMA index_list("paychecks")[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("users")[0m
+
+
+Processing WelcomeController#index (for 127.0.0.1 at 2009-01-25 09:08:10) [GET]
+Rendering template within layouts/welcome
+Rendering welcome/index
+Completed in 46ms (View: 44, DB: 0) | 200 OK [http://localhost/welcome]
+
+
+Processing WelcomeController#login (for 127.0.0.1 at 2009-01-25 09:08:23) [POST]
+  Parameters: {"commit"=>"Login", "authenticity_token"=>"feb64e3d80fcc5c659adfb5b6de52cf37f5db222", "password"=>"Password", "email"=>"Email"}
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."email" = 'Email') LIMIT 1[0m
+Rendering template within layouts/welcome
+Rendering welcome/index
+Completed in 28ms (View: 6, DB: 0) | 200 OK [http://localhost/welcome/login]
+
+
+Processing WelcomeController#login (for 127.0.0.1 at 2009-01-25 09:08:26) [POST]
+  Parameters: {"commit"=>"Login", "authenticity_token"=>"feb64e3d80fcc5c659adfb5b6de52cf37f5db222", "password"=>"Password", "email"=>"Email"}
+  [4;35;1mUser Load (0.1ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."email" = 'Email') LIMIT 1[0m
+Rendering template within layouts/welcome
+Rendering welcome/index
+Completed in 16ms (View: 6, DB: 0) | 200 OK [http://localhost/welcome/login]
+
+
+Processing WelcomeController#index (for 127.0.0.1 at 2009-01-25 09:35:31) [GET]
+Rendering template within layouts/welcome
+Rendering welcome/index
+Completed in 7ms (View: 5, DB: 0) | 200 OK [http://localhost/welcome]
+
+
+Processing WelcomeController#login (for 127.0.0.1 at 2009-01-25 09:35:36) [POST]
+  Parameters: {"commit"=>"Login", "authenticity_token"=>"feb64e3d80fcc5c659adfb5b6de52cf37f5db222", "password"=>"aubr33", "email"=>"cavneb@gmail.com"}
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."email" = 'cavneb@gmail.com') LIMIT 1[0m
+Rendering template within layouts/welcome
+Rendering welcome/index
+Completed in 17ms (View: 6, DB: 0) | 200 OK [http://localhost/welcome/login]
+
+
+Processing WelcomeController#signup (for 127.0.0.1 at 2009-01-25 09:35:43) [GET]
+
+
+ActionController::UnknownAction (No action responded to signup. Actions: index, load_user, login, and logout):
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/filters.rb:617:in `call_filters'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/filters.rb:610:in `perform_action_without_benchmark'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/benchmarking.rb:68:in `perform_action_without_rescue'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/benchmark.rb:293:in `measure'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/benchmarking.rb:68:in `perform_action_without_rescue'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/rescue.rb:136:in `perform_action_without_caching'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/caching/sql_cache.rb:13:in `perform_action'
+    /Library/Ruby/Gems/1.8/gems/activerecord-2.2.2/lib/active_record/connection_adapters/abstract/query_cache.rb:34:in `cache'
+    /Library/Ruby/Gems/1.8/gems/activerecord-2.2.2/lib/active_record/query_cache.rb:8:in `cache'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/caching/sql_cache.rb:12:in `perform_action'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/base.rb:524:in `send'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/base.rb:524:in `process_without_filters'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/filters.rb:606:in `process_without_session_management_support'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/session_management.rb:134:in `process'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/base.rb:392:in `process'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:183:in `handle_request'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:110:in `dispatch_unlocked'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:123:in `dispatch'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:122:in `synchronize'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:122:in `dispatch'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:132:in `dispatch_cgi'
+    /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:39:in `dispatch'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/bin/../lib/mongrel/rails.rb:76:in `process'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/bin/../lib/mongrel/rails.rb:74:in `synchronize'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/bin/../lib/mongrel/rails.rb:74:in `process'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/lib/mongrel.rb:159:in `process_client'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/lib/mongrel.rb:158:in `each'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/lib/mongrel.rb:158:in `process_client'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/lib/mongrel.rb:285:in `run'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/lib/mongrel.rb:285:in `initialize'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/lib/mongrel.rb:285:in `new'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/lib/mongrel.rb:285:in `run'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/lib/mongrel.rb:268:in `initialize'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/lib/mongrel.rb:268:in `new'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/lib/mongrel.rb:268:in `run'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/lib/mongrel/configurator.rb:282:in `run'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/lib/mongrel/configurator.rb:281:in `each'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/lib/mongrel/configurator.rb:281:in `run'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/bin/mongrel_rails:128:in `run'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/lib/mongrel/command.rb:212:in `run'
+    /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/gems/1.8/gems/mongrel-1.1.4/bin/mongrel_rails:281
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:142:in `load_without_new_constant_marking'
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:142:in `load'
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:521:in `new_constants_in'
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:142:in `load'
+    /Library/Ruby/Gems/1.8/gems/rails-2.2.2/lib/commands/servers/mongrel.rb:64
+    /Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
+    /Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `require'
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:153:in `require'
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:521:in `new_constants_in'
+    /Library/Ruby/Gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:153:in `require'
+    /Library/Ruby/Gems/1.8/gems/rails-2.2.2/lib/commands/server.rb:49
+    /Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
+    /Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `require'
+    ./script/server:3
+
+Rendering /Library/Ruby/Gems/1.8/gems/actionpack-2.2.2/lib/action_controller/templates/rescues/layout.erb (not_found)
+
+
+Processing WelcomeController#login (for 127.0.0.1 at 2009-01-25 09:35:53) [GET]
+  [4;35;1mUser Load (0.1ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."email" IS NULL) LIMIT 1[0m
+Rendering template within layouts/welcome
+Rendering welcome/index
+Completed in 13ms (View: 4, DB: 0) | 200 OK [http://localhost/welcome/login]
+
+
+Processing WelcomeController#logout (for 127.0.0.1 at 2009-01-25 09:35:56) [GET]
+Redirected to actionindex
+Completed in 2ms (DB: 0) | 302 Found [http://localhost/welcome/logout]
+
+
+Processing WelcomeController#index (for 127.0.0.1 at 2009-07-28 20:54:49) [GET]
+Rendering template within layouts/welcome
+Rendering welcome/index
+Completed in 29ms (View: 27, DB: 0) | 200 OK [http://localhost/]
+
+
+Processing WelcomeController#login (for 127.0.0.1 at 2009-07-28 20:54:54) [POST]
+  Parameters: {"commit"=>"Login", "authenticity_token"=>"30a653eecc0046f870f1a8cb05945df19b1b12c6", "password"=>"aubr33", "email"=>"cavneb@gmail.com"}
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."email" = 'cavneb@gmail.com') LIMIT 1[0m
+Rendering template within layouts/welcome
+Rendering welcome/index
+Completed in 37ms (View: 4, DB: 0) | 200 OK [http://localhost/welcome/login]
+  [4;36;1mUser Load (0.6ms)[0m   [0;1mSELECT * FROM "users" LIMIT 1[0m
+  [4;35;1mUser Exists (0.2ms)[0m   [0mSELECT "users".id FROM "users" WHERE ("users"."username" = 'cavneb') LIMIT 1[0m
+  [4;36;1mUser Exists (0.1ms)[0m   [0;1mSELECT "users".id FROM "users" WHERE ("users"."email" = 'cavneb@gmail.com') LIMIT 1[0m
+  [4;35;1mUser Create (0.4ms)[0m   [0mINSERT INTO "users" ("salt", "created_at", "updated_at", "username", "hashed_password", "last_name", "email", "first_name") VALUES('196422200.260430883950124', '2009-07-29 02:55:48', '2009-07-29 02:55:48', 'cavneb', '52282eddc0834086d4c06585ab47563f4ba66632', 'Berry', 'cavneb@gmail.com', 'Eric')[0m
+
+
+Processing WelcomeController#login (for 127.0.0.1 at 2009-07-28 20:55:56) [POST]
+  Parameters: {"commit"=>"Login", "authenticity_token"=>"30a653eecc0046f870f1a8cb05945df19b1b12c6", "password"=>"aubr33", "email"=>"cavneb"}
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."email" = 'cavneb') LIMIT 1[0m
+Rendering template within layouts/welcome
+Rendering welcome/index
+Completed in 15ms (View: 5, DB: 0) | 200 OK [http://localhost/welcome/login]
+
+
+Processing WelcomeController#login (for 127.0.0.1 at 2009-07-28 20:56:04) [POST]
+  Parameters: {"commit"=>"Login", "authenticity_token"=>"30a653eecc0046f870f1a8cb05945df19b1b12c6", "password"=>"aubr33", "email"=>"cavneb@gmail.com"}
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."email" = 'cavneb@gmail.com') LIMIT 1[0m
+Redirected to controllerdashboard
+Completed in 15ms (DB: 0) | 302 Found [http://localhost/welcome/login]
+
+
+Processing DashboardController#index (for 127.0.0.1 at 2009-07-28 20:56:04) [GET]
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering dashboard/index
+  [4;35;1mAccount Load (0.2ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+Completed in 1315ms (View: 1306, DB: 0) | 200 OK [http://localhost/dashboard]
+
+
+Processing AccountsController#index (for 127.0.0.1 at 2009-07-28 20:56:07) [GET]
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering accounts/index
+  [4;35;1mAccount Load (0.2ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+Completed in 31ms (View: 22, DB: 0) | 200 OK [http://localhost/accounts]
+
+
+Processing AccountsController#new (for 127.0.0.1 at 2009-07-28 20:56:10) [GET]
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering accounts/new
+Rendered accounts/_form (65.7ms)
+  [4;35;1mAccount Load (0.2ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+Completed in 168ms (View: 155, DB: 0) | 200 OK [http://localhost/accounts/new]
+
+
+Processing AccountsController#create (for 127.0.0.1 at 2009-07-28 20:56:25) [POST]
+  Parameters: {"commit"=>"Create", "authenticity_token"=>"30a653eecc0046f870f1a8cb05945df19b1b12c6", "account"=>{"name"=>"UPLECU Checking", "institution"=>"UPLECU", "account_type"=>"Checking", "balance"=>"3500"}}
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+  [4;35;1mAccount Create (0.5ms)[0m   [0mINSERT INTO "accounts" ("name", "created_at", "institution", "updated_at", "account_type", "user_id", "balance") VALUES('UPLECU Checking', '2009-07-29 02:56:25', 'UPLECU', '2009-07-29 02:56:25', 'Checking', 1, 3500.0)[0m
+Redirected to /accounts
+Completed in 19ms (DB: 1) | 302 Found [http://localhost/accounts]
+
+
+Processing AccountsController#index (for 127.0.0.1 at 2009-07-28 20:56:25) [GET]
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering accounts/index
+  [4;35;1mAccount Load (0.3ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;36;1mBucket Load (0.2ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;35;1mBucket Load (0.1ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 68ms (View: 59, DB: 0) | 200 OK [http://localhost/accounts]
+
+
+Processing PaychecksController#index (for 127.0.0.1 at 2009-07-28 20:56:28) [GET]
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering paychecks/index
+  [4;35;1mPaycheck Load (0.2ms)[0m   [0mSELECT * FROM "paychecks" WHERE ("paychecks".user_id = 1) [0m
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;35;1mBucket Load (0.1ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 34ms (View: 25, DB: 0) | 200 OK [http://localhost/paychecks]
+
+
+Processing PaychecksController#new (for 127.0.0.1 at 2009-07-28 20:56:30) [GET]
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering paychecks/new
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+Rendered paychecks/_paycheck_to_account (8.4ms)
+Rendered paychecks/_paycheck_to_account (1.1ms)
+Rendered paychecks/_form (98.3ms)
+  [4;35;1mBucket Load (0.2ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 128ms (View: 110, DB: 0) | 200 OK [http://localhost/paychecks/new]
+
+
+Processing PaychecksController#create (for 127.0.0.1 at 2009-07-28 20:56:54) [POST]
+  Parameters: {"commit"=>"Create", "paycheck"=>{"name"=>"First of Month", "paycheck_to_account_attributes"=>[{"account_id"=>"1", "amount"=>"2350"}], "amount"=>"2350"}, "authenticity_token"=>"30a653eecc0046f870f1a8cb05945df19b1b12c6"}
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+  [4;36;1mPaycheck Create (0.4ms)[0m   [0;1mINSERT INTO "paychecks" ("name", "created_at", "updated_at", "amount", "user_id") VALUES('First of Month', '2009-07-29 02:56:54', '2009-07-29 02:56:54', 2350.0, 1)[0m
+  [4;35;1mPaycheckToAccount Create (0.1ms)[0m   [0mINSERT INTO "paycheck_to_accounts" ("created_at", "updated_at", "account_id", "amount", "paycheck_id") VALUES('2009-07-29 02:56:54', '2009-07-29 02:56:54', 1, 2350.0, 1)[0m
+Redirected to /paychecks
+Completed in 23ms (DB: 1) | 302 Found [http://localhost/paychecks]
+
+
+Processing PaychecksController#index (for 127.0.0.1 at 2009-07-28 20:56:54) [GET]
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering paychecks/index
+  [4;35;1mPaycheck Load (0.3ms)[0m   [0mSELECT * FROM "paychecks" WHERE ("paychecks".user_id = 1) [0m
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;35;1mBucket Load (0.1ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 31ms (View: 23, DB: 0) | 200 OK [http://localhost/paychecks]
+
+
+Processing BucketsController#index (for 127.0.0.1 at 2009-07-28 20:56:56) [GET]
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;35;1mPaycheck Load (0.2ms)[0m   [0mSELECT * FROM "paychecks" WHERE ("paychecks".user_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+Rendering template within layouts/no_side
+Rendering buckets/index
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_erb_app47views47buckets47index46html46erb at /Users/berry/OldProjects/ezbuckets/trunk/app/views/buckets/index.html.erb:34)
+  [4;35;1mAccount Load (0.3ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts"."id" = 1) [0m
+Rendered buckets/_bucket_row (4.8ms)
+  [4;36;1mCACHE (0.0ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;35;1mPaycheckToAccount Load (0.3ms)[0m   [0mSELECT * FROM "paycheck_to_accounts" WHERE (paycheck_id = 1) [0m
+Completed in 158ms (View: 138, DB: 1) | 200 OK [http://localhost/buckets]
+
+
+Processing DistributionPlansController#index (for 127.0.0.1 at 2009-07-28 20:57:05) [GET]
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering distribution_plans/index
+  [4;35;1mDistributionPlan Load (0.2ms)[0m   [0mSELECT * FROM "distribution_plans" WHERE ("distribution_plans".user_id = 1) [0m
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;35;1mBucket Load (0.2ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 52ms (View: 43, DB: 0) | 200 OK [http://localhost/distribution_plans]
+
+
+Processing PaychecksController#index (for 127.0.0.1 at 2009-07-28 20:57:07) [GET]
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering paychecks/index
+  [4;36;1mPaycheck Load (0.3ms)[0m   [0;1mSELECT * FROM "paychecks" WHERE ("paychecks".user_id = 1) [0m
+  [4;35;1mAccount Load (0.3ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;35;1mBucket Load (0.1ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 31ms (View: 23, DB: 0) | 200 OK [http://localhost/paychecks]
+
+
+Processing AccountsController#index (for 127.0.0.1 at 2009-07-28 20:57:07) [GET]
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering accounts/index
+  [4;35;1mAccount Load (0.3ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;36;1mBucket Load (0.2ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;35;1mBucket Load (0.1ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 26ms (View: 18, DB: 0) | 200 OK [http://localhost/accounts]
+
+
+Processing BucketsController#index (for 127.0.0.1 at 2009-07-28 20:57:09) [GET]
+  [4;36;1mUser Load (0.3ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+  [4;35;1mAccount Load (0.3ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;36;1mPaycheck Load (0.3ms)[0m   [0;1mSELECT * FROM "paychecks" WHERE ("paychecks".user_id = 1) [0m
+  [4;35;1mBucket Load (0.2ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+Rendering template within layouts/no_side
+Rendering buckets/index
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_erb_app47views47buckets47index46html46erb at /Users/berry/OldProjects/ezbuckets/trunk/app/views/buckets/index.html.erb:34)
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts"."id" = 1) [0m
+Rendered buckets/_bucket_row (4.6ms)
+  [4;35;1mCACHE (0.0ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mPaycheckToAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "paycheck_to_accounts" WHERE (paycheck_id = 1) [0m
+Completed in 131ms (View: 24, DB: 1) | 200 OK [http://localhost/buckets]
+
+
+Processing DistributionPlansController#index (for 127.0.0.1 at 2009-07-28 20:57:10) [GET]
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering distribution_plans/index
+  [4;36;1mDistributionPlan Load (0.2ms)[0m   [0;1mSELECT * FROM "distribution_plans" WHERE ("distribution_plans".user_id = 1) [0m
+  [4;35;1mAccount Load (0.3ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;36;1mBucket Load (0.2ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;35;1mBucket Load (0.1ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 29ms (View: 20, DB: 0) | 200 OK [http://localhost/distribution_plans]
+
+
+Processing BucketsController#index (for 127.0.0.1 at 2009-07-28 20:57:10) [GET]
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+  [4;35;1mAccount Load (0.3ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;36;1mPaycheck Load (0.2ms)[0m   [0;1mSELECT * FROM "paychecks" WHERE ("paychecks".user_id = 1) [0m
+  [4;35;1mBucket Load (0.1ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+Rendering template within layouts/no_side
+Rendering buckets/index
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_erb_app47views47buckets47index46html46erb at /Users/berry/OldProjects/ezbuckets/trunk/app/views/buckets/index.html.erb:34)
+  [4;36;1mAccount Load (0.2ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts"."id" = 1) [0m
+Rendered buckets/_bucket_row (4.3ms)
+  [4;35;1mCACHE (0.0ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mPaycheckToAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "paycheck_to_accounts" WHERE (paycheck_id = 1) [0m
+Completed in 42ms (View: 22, DB: 1) | 200 OK [http://localhost/buckets]
+
+
+Processing DashboardController#index (for 127.0.0.1 at 2009-07-28 20:57:15) [GET]
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering dashboard/index
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;35;1mBucket Load (0.2ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 108ms (View: 18, DB: 0) | 200 OK [http://localhost/dashboard]
+
+
+Processing AccountsController#index (for 127.0.0.1 at 2009-07-28 20:59:18) [GET]
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering accounts/index
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;35;1mBucket Load (0.2ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 27ms (View: 18, DB: 0) | 200 OK [http://localhost/accounts]
+
+
+Processing PaychecksController#index (for 127.0.0.1 at 2009-07-28 20:59:19) [GET]
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering paychecks/index
+  [4;36;1mPaycheck Load (0.3ms)[0m   [0;1mSELECT * FROM "paychecks" WHERE ("paychecks".user_id = 1) [0m
+  [4;35;1mAccount Load (0.3ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;36;1mBucket Load (0.2ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;35;1mBucket Load (0.1ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 32ms (View: 24, DB: 0) | 200 OK [http://localhost/paychecks]
+
+
+Processing BucketsController#index (for 127.0.0.1 at 2009-07-28 20:59:23) [GET]
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+  [4;35;1mAccount Load (0.3ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;36;1mPaycheck Load (0.3ms)[0m   [0;1mSELECT * FROM "paychecks" WHERE ("paychecks".user_id = 1) [0m
+  [4;35;1mBucket Load (0.1ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+Rendering template within layouts/no_side
+Rendering buckets/index
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_erb_app47views47buckets47index46html46erb at /Users/berry/OldProjects/ezbuckets/trunk/app/views/buckets/index.html.erb:34)
+  [4;36;1mAccount Load (0.2ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts"."id" = 1) [0m
+Rendered buckets/_bucket_row (4.3ms)
+  [4;35;1mCACHE (0.0ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mPaycheckToAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "paycheck_to_accounts" WHERE (paycheck_id = 1) [0m
+Completed in 125ms (View: 105, DB: 1) | 200 OK [http://localhost/buckets]
+
+
+Processing DistributionPlansController#index (for 127.0.0.1 at 2009-07-28 20:59:24) [GET]
+  [4;35;1mUser Load (0.3ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering distribution_plans/index
+  [4;36;1mDistributionPlan Load (0.2ms)[0m   [0;1mSELECT * FROM "distribution_plans" WHERE ("distribution_plans".user_id = 1) [0m
+  [4;35;1mAccount Load (0.4ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;36;1mBucket Load (0.2ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;35;1mBucket Load (0.1ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 32ms (View: 23, DB: 0) | 200 OK [http://localhost/distribution_plans]
+
+
+Processing WelcomeController#logout (for 127.0.0.1 at 2009-07-28 20:59:25) [GET]
+Redirected to actionindex
+Completed in 2ms (DB: 0) | 302 Found [http://localhost/welcome/logout]
+
+
+Processing WelcomeController#index (for 127.0.0.1 at 2009-07-28 20:59:25) [GET]
+Rendering template within layouts/welcome
+Rendering welcome/index
+Completed in 5ms (View: 4, DB: 0) | 200 OK [http://localhost/]
+
+
+Processing BucketsController#index (for 127.0.0.1 at 2009-07-28 20:59:31) [GET]
+
+
+ActiveRecord::RecordNotFound (Couldn't find User without an ID):
+    /opt/local/lib/ruby/gems/1.8/gems/activerecord-2.2.2/lib/active_record/base.rb:1509:in `find_from_ids'
+    /opt/local/lib/ruby/gems/1.8/gems/activerecord-2.2.2/lib/active_record/base.rb:590:in `find'
+    /app/controllers/application.rb:12:in `load_user'
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/callbacks.rb:178:in `send'
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/callbacks.rb:178:in `evaluate_method'
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/callbacks.rb:166:in `call'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/filters.rb:225:in `call'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/filters.rb:629:in `run_before_filters'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/filters.rb:615:in `call_filters'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/filters.rb:610:in `perform_action_without_benchmark'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/benchmarking.rb:68:in `perform_action_without_rescue'
+    /opt/local/lib/ruby/1.8/benchmark.rb:293:in `measure'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/benchmarking.rb:68:in `perform_action_without_rescue'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/rescue.rb:136:in `perform_action_without_caching'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/caching/sql_cache.rb:13:in `perform_action'
+    /opt/local/lib/ruby/gems/1.8/gems/activerecord-2.2.2/lib/active_record/connection_adapters/abstract/query_cache.rb:34:in `cache'
+    /opt/local/lib/ruby/gems/1.8/gems/activerecord-2.2.2/lib/active_record/query_cache.rb:8:in `cache'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/caching/sql_cache.rb:12:in `perform_action'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/base.rb:524:in `send'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/base.rb:524:in `process_without_filters'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/filters.rb:606:in `process_without_session_management_support'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/session_management.rb:134:in `process'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/base.rb:392:in `process'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:183:in `handle_request'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:110:in `dispatch_unlocked'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:123:in `dispatch'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:122:in `synchronize'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:122:in `dispatch'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:132:in `dispatch_cgi'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:39:in `dispatch'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/bin/../lib/mongrel/rails.rb:76:in `process'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/bin/../lib/mongrel/rails.rb:74:in `synchronize'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/bin/../lib/mongrel/rails.rb:74:in `process'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:159:in `process_client'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `each'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `process_client'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `initialize'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `new'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `initialize'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `new'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `run'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel/configurator.rb:282:in `run'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel/configurator.rb:281:in `each'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel/configurator.rb:281:in `run'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/bin/mongrel_rails:128:in `run'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel/command.rb:212:in `run'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/bin/mongrel_rails:281
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:142:in `load_without_new_constant_marking'
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:142:in `load'
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:521:in `new_constants_in'
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:142:in `load'
+    /opt/local/lib/ruby/gems/1.8/gems/rails-2.2.2/lib/commands/servers/mongrel.rb:64
+    /opt/local/lib/ruby/vendor_ruby/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
+    /opt/local/lib/ruby/vendor_ruby/1.8/rubygems/custom_require.rb:31:in `require'
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:153:in `require'
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:521:in `new_constants_in'
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:153:in `require'
+    /opt/local/lib/ruby/gems/1.8/gems/rails-2.2.2/lib/commands/server.rb:49
+    /opt/local/lib/ruby/vendor_ruby/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
+    /opt/local/lib/ruby/vendor_ruby/1.8/rubygems/custom_require.rb:31:in `require'
+    ./script/server:3
+
+Rendered /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/templates/rescues/_trace (32.3ms)
+Rendered /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/templates/rescues/_request_and_response (0.9ms)
+Rendering /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/templates/rescues/layout.erb (not_found)
+
+
+Processing WelcomeController#logout (for 127.0.0.1 at 2009-07-28 20:59:35) [GET]
+Redirected to actionindex
+Completed in 2ms (DB: 0) | 302 Found [http://localhost/welcome/logout]
+
+
+Processing WelcomeController#index (for 127.0.0.1 at 2009-07-28 20:59:35) [GET]
+Rendering template within layouts/welcome
+Rendering welcome/index
+Completed in 5ms (View: 4, DB: 0) | 200 OK [http://localhost/]
+
+
+Processing WelcomeController#login (for 127.0.0.1 at 2009-07-28 20:59:43) [POST]
+  Parameters: {"commit"=>"Login", "authenticity_token"=>"30a653eecc0046f870f1a8cb05945df19b1b12c6", "password"=>"Password", "email"=>"cavneb@gmail.com"}
+  [4;36;1mUser Load (0.3ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."email" = 'cavneb@gmail.com') LIMIT 1[0m
+Rendering template within layouts/welcome
+Rendering welcome/index
+Completed in 14ms (View: 4, DB: 0) | 200 OK [http://localhost/welcome/login]
+
+
+Processing WelcomeController#login (for 127.0.0.1 at 2009-07-28 20:59:49) [POST]
+  Parameters: {"commit"=>"Login", "authenticity_token"=>"30a653eecc0046f870f1a8cb05945df19b1b12c6", "password"=>"ad3lant3", "email"=>"cavneb@gmail.com"}
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."email" = 'cavneb@gmail.com') LIMIT 1[0m
+Rendering template within layouts/welcome
+Rendering welcome/index
+Completed in 14ms (View: 4, DB: 0) | 200 OK [http://localhost/welcome/login]
+
+
+Processing WelcomeController#login (for 127.0.0.1 at 2009-07-28 20:59:55) [POST]
+  Parameters: {"commit"=>"Login", "authenticity_token"=>"30a653eecc0046f870f1a8cb05945df19b1b12c6", "password"=>"aubr33", "email"=>"cavneb@gmail.com"}
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."email" = 'cavneb@gmail.com') LIMIT 1[0m
+Redirected to controllerdashboard
+Completed in 10ms (DB: 0) | 302 Found [http://localhost/welcome/login]
+
+
+Processing DashboardController#index (for 127.0.0.1 at 2009-07-28 20:59:55) [GET]
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering dashboard/index
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;35;1mBucket Load (0.2ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 25ms (View: 17, DB: 0) | 200 OK [http://localhost/dashboard]
+
+
+Processing AccountsController#index (for 127.0.0.1 at 2009-07-28 20:59:57) [GET]
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering accounts/index
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;35;1mBucket Load (0.2ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 111ms (View: 19, DB: 0) | 200 OK [http://localhost/accounts]
+
+
+Processing PaychecksController#index (for 127.0.0.1 at 2009-07-28 20:59:58) [GET]
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering paychecks/index
+  [4;36;1mPaycheck Load (0.2ms)[0m   [0;1mSELECT * FROM "paychecks" WHERE ("paychecks".user_id = 1) [0m
+  [4;35;1mAccount Load (0.3ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;36;1mBucket Load (0.2ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;35;1mBucket Load (0.1ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 31ms (View: 23, DB: 0) | 200 OK [http://localhost/paychecks]
+
+
+Processing AccountsController#index (for 127.0.0.1 at 2009-07-28 20:59:59) [GET]
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering accounts/index
+  [4;35;1mAccount Load (0.3ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;36;1mBucket Load (0.2ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;35;1mBucket Load (0.1ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 26ms (View: 18, DB: 0) | 200 OK [http://localhost/accounts]
+
+
+Processing PaychecksController#index (for 127.0.0.1 at 2009-07-28 21:00:00) [GET]
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering paychecks/index
+  [4;35;1mPaycheck Load (0.3ms)[0m   [0mSELECT * FROM "paychecks" WHERE ("paychecks".user_id = 1) [0m
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;35;1mBucket Load (0.2ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 111ms (View: 103, DB: 0) | 200 OK [http://localhost/paychecks]
+
+
+Processing PaychecksController#edit (for 127.0.0.1 at 2009-07-28 21:00:02) [GET]
+  Parameters: {"id"=>"1"}
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+  [4;36;1mPaycheck Load (0.2ms)[0m   [0;1mSELECT * FROM "paychecks" WHERE ("paychecks"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering paychecks/edit
+  [4;35;1mPaycheckToAccount Load (0.3ms)[0m   [0mSELECT * FROM "paycheck_to_accounts" WHERE ("paycheck_to_accounts".paycheck_id = 1) [0m
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+Rendered paychecks/_paycheck_to_account (8.7ms)
+Rendered paychecks/_paycheck_to_account (1.1ms)
+Rendered paychecks/_form (22.0ms)
+  [4;35;1mBucket Load (0.2ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 67ms (View: 54, DB: 0) | 200 OK [http://localhost/paychecks/1/edit]
+
+
+Processing PaychecksController#update (for 127.0.0.1 at 2009-07-28 21:00:11) [PUT]
+  Parameters: {"commit"=>"Update", "paycheck"=>{"name"=>"First of Month", "paycheck_to_account_attributes"=>[{"should_destroy"=>"", "account_id"=>"1", "amount"=>"1350", "id"=>"1"}], "amount"=>"$1,350.00"}, "authenticity_token"=>"30a653eecc0046f870f1a8cb05945df19b1b12c6", "id"=>"1"}
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+  [4;36;1mPaycheck Load (0.2ms)[0m   [0;1mSELECT * FROM "paychecks" WHERE ("paychecks"."id" = 1) [0m
+  [4;35;1mPaycheckToAccount Load (0.2ms)[0m   [0mSELECT * FROM "paycheck_to_accounts" WHERE ("paycheck_to_accounts".paycheck_id = 1) [0m
+WARNING: Can't mass-assign these protected attributes: id
+  [4;36;1mPaycheck Update (0.3ms)[0m   [0;1mUPDATE "paychecks" SET "updated_at" = '2009-07-29 03:00:11', "amount" = 1350.0 WHERE "id" = 1[0m
+  [4;35;1mPaycheckToAccount Update (0.1ms)[0m   [0mUPDATE "paycheck_to_accounts" SET "updated_at" = '2009-07-29 03:00:11', "amount" = 1350.0 WHERE "id" = 1[0m
+Redirected to /paychecks
+Completed in 23ms (DB: 1) | 302 Found [http://localhost/paychecks/1]
+
+
+Processing PaychecksController#index (for 127.0.0.1 at 2009-07-28 21:00:11) [GET]
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering paychecks/index
+  [4;35;1mPaycheck Load (0.2ms)[0m   [0mSELECT * FROM "paychecks" WHERE ("paychecks".user_id = 1) [0m
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;35;1mBucket Load (0.2ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 32ms (View: 24, DB: 0) | 200 OK [http://localhost/paychecks]
+
+
+Processing AccountsController#index (for 127.0.0.1 at 2009-07-28 21:01:13) [GET]
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering accounts/index
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;35;1mBucket Load (0.2ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 117ms (View: 20, DB: 0) | 200 OK [http://localhost/accounts]
+
+
+Processing PaychecksController#index (for 127.0.0.1 at 2009-07-28 21:01:28) [GET]
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering paychecks/index
+  [4;36;1mPaycheck Load (0.3ms)[0m   [0;1mSELECT * FROM "paychecks" WHERE ("paychecks".user_id = 1) [0m
+  [4;35;1mAccount Load (0.3ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;35;1mBucket Load (0.1ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 31ms (View: 23, DB: 0) | 200 OK [http://localhost/paychecks]
+
+
+Processing BucketsController#index (for 127.0.0.1 at 2009-07-28 21:01:30) [GET]
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+  [4;35;1mAccount Load (0.3ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;36;1mPaycheck Load (0.2ms)[0m   [0;1mSELECT * FROM "paychecks" WHERE ("paychecks".user_id = 1) [0m
+  [4;35;1mBucket Load (0.1ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+Rendering template within layouts/no_side
+Rendering buckets/index
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_erb_app47views47buckets47index46html46erb at /Users/berry/OldProjects/ezbuckets/trunk/app/views/buckets/index.html.erb:34)
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts"."id" = 1) [0m
+Rendered buckets/_bucket_row (4.3ms)
+  [4;35;1mCACHE (0.0ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mPaycheckToAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "paycheck_to_accounts" WHERE (paycheck_id = 1) [0m
+Completed in 42ms (View: 22, DB: 1) | 200 OK [http://localhost/buckets]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-08-19 17:27:55) [POST]
+  Parameters: {"commit"=>"Register", "authenticity_token"=>"178803a4bfa29beabfef216258b818d3781023d2", "user"=>{"password_confirmation"=>"aubr33", "password"=>"aubr33", "login"=>"cavneb", "email"=>"cavneb@gmail.com"}}
+
+
+ActionController::RoutingError (No route matches "/account" with {:method=>:post}):
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/routing/recognition_optimisation.rb:66:in `recognize_path'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/routing/route_set.rb:386:in `recognize'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:182:in `handle_request'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:110:in `dispatch_unlocked'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:123:in `dispatch'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:122:in `synchronize'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:122:in `dispatch'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:132:in `dispatch_cgi'
+    /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/dispatcher.rb:39:in `dispatch'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/bin/../lib/mongrel/rails.rb:76:in `process'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/bin/../lib/mongrel/rails.rb:74:in `synchronize'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/bin/../lib/mongrel/rails.rb:74:in `process'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:159:in `process_client'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `each'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `process_client'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `initialize'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `new'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `initialize'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `new'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `run'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel/configurator.rb:282:in `run'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel/configurator.rb:281:in `each'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel/configurator.rb:281:in `run'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/bin/mongrel_rails:128:in `run'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/lib/mongrel/command.rb:212:in `run'
+    /opt/local/lib/ruby/gems/1.8/gems/mongrel-1.1.5/bin/mongrel_rails:281
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:142:in `load_without_new_constant_marking'
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:142:in `load'
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:521:in `new_constants_in'
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:142:in `load'
+    /opt/local/lib/ruby/gems/1.8/gems/rails-2.2.2/lib/commands/servers/mongrel.rb:64
+    /opt/local/lib/ruby/vendor_ruby/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
+    /opt/local/lib/ruby/vendor_ruby/1.8/rubygems/custom_require.rb:31:in `require'
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:153:in `require'
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:521:in `new_constants_in'
+    /opt/local/lib/ruby/gems/1.8/gems/activesupport-2.2.2/lib/active_support/dependencies.rb:153:in `require'
+    /opt/local/lib/ruby/gems/1.8/gems/rails-2.2.2/lib/commands/server.rb:49
+    /opt/local/lib/ruby/vendor_ruby/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
+    /opt/local/lib/ruby/vendor_ruby/1.8/rubygems/custom_require.rb:31:in `require'
+    ./script/server:3
+
+Rendering /opt/local/lib/ruby/gems/1.8/gems/actionpack-2.2.2/lib/action_controller/templates/rescues/layout.erb (not_found)
+
+
+Processing WelcomeController#index (for 127.0.0.1 at 2009-08-19 17:27:56) [GET]
+Rendering template within layouts/welcome
+Rendering welcome/index
+Completed in 30ms (View: 28, DB: 0) | 200 OK [http://localhost/]
+
+
+Processing WelcomeController#login (for 127.0.0.1 at 2009-08-19 17:28:01) [POST]
+  Parameters: {"commit"=>"Login", "authenticity_token"=>"2cc41e296b1b6cf83f4b503862a7a51469a14a34", "password"=>"tanner", "email"=>"cavneb@gmail.com"}
+  [4;36;1mUser Load (0.3ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."email" = 'cavneb@gmail.com') LIMIT 1[0m
+Rendering template within layouts/welcome
+Rendering welcome/index
+Completed in 42ms (View: 4, DB: 0) | 200 OK [http://localhost/welcome/login]
+  [4;36;1mUser Load (0.9ms)[0m   [0;1mSELECT * FROM "users" LIMIT 1[0m
+
+
+Processing WelcomeController#login (for 127.0.0.1 at 2009-08-19 17:28:23) [POST]
+  Parameters: {"commit"=>"Login", "authenticity_token"=>"2cc41e296b1b6cf83f4b503862a7a51469a14a34", "password"=>"aubr33", "email"=>"cavneb@gmail.com"}
+  [4;36;1mUser Load (0.3ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."email" = 'cavneb@gmail.com') LIMIT 1[0m
+Redirected to controllerdashboard
+Completed in 16ms (DB: 0) | 302 Found [http://localhost/welcome/login]
+
+
+Processing DashboardController#index (for 127.0.0.1 at 2009-08-19 17:28:23) [GET]
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering dashboard/index
+  [4;36;1mAccount Load (0.4ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;35;1mBucket Load (0.2ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 90ms (View: 81, DB: 0) | 200 OK [http://localhost/dashboard]
+
+
+Processing AccountsController#index (for 127.0.0.1 at 2009-08-19 17:28:24) [GET]
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering accounts/index
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;35;1mBucket Load (0.2ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mBucket Load (0.1ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 41ms (View: 32, DB: 0) | 200 OK [http://localhost/accounts]
+
+
+Processing PaychecksController#index (for 127.0.0.1 at 2009-08-19 17:28:25) [GET]
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering paychecks/index
+  [4;36;1mPaycheck Load (0.4ms)[0m   [0;1mSELECT * FROM "paychecks" WHERE ("paychecks".user_id = 1) [0m
+  [4;35;1mAccount Load (0.3ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;36;1mBucket Load (0.2ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;35;1mBucket Load (0.1ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 140ms (View: 130, DB: 0) | 200 OK [http://localhost/paychecks]
+
+
+Processing BucketsController#index (for 127.0.0.1 at 2009-08-19 17:28:26) [GET]
+  [4;36;1mUser Load (0.2ms)[0m   [0;1mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+  [4;35;1mAccount Load (0.4ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;36;1mPaycheck Load (0.2ms)[0m   [0;1mSELECT * FROM "paychecks" WHERE ("paychecks".user_id = 1) [0m
+  [4;35;1mBucket Load (0.2ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+Rendering template within layouts/no_side
+Rendering buckets/index
+DEPRECATION WARNING: truncate takes an option hash instead of separate length and omission arguments. (called from _run_erb_app47views47buckets47index46html46erb at /Users/berry/OldProjects/ezbuckets/trunk/app/views/buckets/index.html.erb:34)
+  [4;36;1mAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "accounts" WHERE ("accounts"."id" = 1) [0m
+Rendered buckets/_bucket_row (4.9ms)
+  [4;35;1mCACHE (0.0ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;36;1mPaycheckToAccount Load (0.3ms)[0m   [0;1mSELECT * FROM "paycheck_to_accounts" WHERE (paycheck_id = 1) [0m
+Completed in 51ms (View: 28, DB: 1) | 200 OK [http://localhost/buckets]
+
+
+Processing DistributionPlansController#index (for 127.0.0.1 at 2009-08-19 17:28:27) [GET]
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM "users" WHERE ("users"."id" = 1) [0m
+Rendering template within layouts/application
+Rendering distribution_plans/index
+  [4;36;1mDistributionPlan Load (0.2ms)[0m   [0;1mSELECT * FROM "distribution_plans" WHERE ("distribution_plans".user_id = 1) [0m
+  [4;35;1mAccount Load (0.3ms)[0m   [0mSELECT * FROM "accounts" WHERE ("accounts".user_id = 1) [0m
+  [4;36;1mBucket Load (0.2ms)[0m   [0;1mSELECT * FROM "buckets" WHERE (bucket_type != 'debt' and account_id = 1) [0m
+  [4;35;1mBucket Load (0.1ms)[0m   [0mSELECT * FROM "buckets" WHERE (bucket_type = 'debt' and account_id = 1) [0m
+Completed in 53ms (View: 44, DB: 0) | 200 OK [http://localhost/distribution_plans]
+
+
+Processing WelcomeController#logout (for 127.0.0.1 at 2009-08-19 17:28:28) [GET]
+Redirected to actionindex
+Completed in 2ms (DB: 0) | 302 Found [http://localhost/welcome/logout]
+
+
+Processing WelcomeController#index (for 127.0.0.1 at 2009-08-19 17:28:28) [GET]
+Rendering template within layouts/welcome
+Rendering welcome/index
+Completed in 6ms (View: 4, DB: 0) | 200 OK [http://localhost/]

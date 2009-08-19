@@ -1,0 +1,27 @@
+<div class="sub_page">
+
+<h1>My Paychecks</h1>
+<h3 class="description">List of your monthly income sources. These are required to set up your accounts and buckets. To add a new paycheck, click <%= link_to "here", new_paycheck_path %>.</h3>
+
+<table width="98%" class="grid">
+<% for paycheck in @user.paychecks %>
+  <% unless @user.paychecks.first == paycheck %>
+  <tr>
+    <td colspan="3">
+      <div class="hr"></div>
+    </td>
+  </tr>
+  <% end %>
+  <tr>
+    <td valign="top" width="75"><img src="/images/icon_checking.png" border="0"/></td>
+    <td valign="top"><h3 class="title"><%= paycheck.name %></h3>
+        <div class="actions">
+          <%= link_to 'Edit', edit_paycheck_path(paycheck) %> |
+          <%= link_to 'Delete', paycheck, :confirm => 'Are you sure?', :method => :delete %></div>
+        </td>
+    <td valign="top" style="text-align: right;"><h3 class="title"><%= number_to_currency(paycheck.amount) %></h3>&nbsp;</td>
+  </tr>
+<% end %>
+</table>
+
+</div>

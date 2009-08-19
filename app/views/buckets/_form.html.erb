@@ -1,0 +1,16 @@
+<table class="form">
+  <tr>
+    <td class="label">Account:</td>
+    <td><%= f.select(:account_id, @user.accounts.collect {|a| [ a.name, a.id ] }, {:prompt => 'Select Account'}) %></td>
+    <td class="error"><%= @bucket.errors ? @bucket.errors.on(:account_id) : "" %></td>
+  </tr>
+  <tr>
+    <td class="label">Name:</td>
+    <td><%= f.text_field :name %></td>
+    <td class="error"><%= @bucket.errors ? @bucket.errors.on(:name) : "" %></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><%= f.submit submit_label %></td>
+  </tr>
+</table>

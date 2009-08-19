@@ -1,0 +1,28 @@
+<div class="sub_page">
+
+<h1>My Accounts</h1>
+<h3 class="description">List of your accounts. To add a new account, click <%= link_to "here", new_account_path %>.</h3>
+
+<table width="98%" class="grid">
+<% for account in @user.accounts %>
+  <% unless @user.accounts.first == account %>
+  <tr>
+    <td colspan="3">
+      <div class="hr"></div>
+    </td>
+  </tr>
+  <% end %>
+  <tr>
+    <td valign="top" width="75"><img src="/images/icon_<%= account.account_type.downcase.gsub(" "){"_"} %>.png" border="0"/></td>
+    <td valign="top"><h3 class="title"><%= account.name %></h3>
+        <span class="institution"><%= account.institution %></span><br/>
+        <div class="actions">
+          <%= link_to 'Edit', edit_account_path(account) %> |
+          <%= link_to 'Delete', account, :confirm => 'Are you sure?', :method => :delete %></div>
+        </td>
+    <td valign="top" style="text-align: right;"><h3 class="title"><%= number_to_currency(account.balance) %></h3>&nbsp;</td>
+  </tr>
+<% end %>
+</table>
+
+</div>

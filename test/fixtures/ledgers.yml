@@ -1,0 +1,24 @@
+one:
+  id: 1
+  account_id: 1
+  amount: 23.85
+  cleared: false
+  name: Gas
+  date_of_transaction: 2008-03-08
+  transaction_type: withdrawal
+two:
+  id: 2
+  account_id: 1
+  amount: 11.22
+  cleared: false
+  name: Lunch at Bajio Grill
+  date_of_transaction: 2008-03-09
+  transaction_type: withdrawal
+three:
+  id: 3
+  account_id: 1
+  amount: 35.00
+  cleared: false
+  name: Walmart - Ammunition
+  date_of_transaction: 2008-03-09
+  transaction_type: withdrawal

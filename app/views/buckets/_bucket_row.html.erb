@@ -1,0 +1,21 @@
+  <tr id="bucket_row_<%= account.id %>-<%= bucket_row.id %>">
+    <td class="first"><%= text_field_tag "bucket_name_#{account.id}-#{bucket_row.id}", bucket_row.name, :style => "width: 210px;  border-top: 0;", :onclick => "this.select();", :onChange => "this.className = 'modified';" %></td>
+    <td>
+      <%= text_field_tag "current_monthly_#{account.id}-#{bucket_row.id}", number_to_currency(bucket_row.balance), :style => "width: 86px; text-align: right; border-top: 0;", :onclick => "this.select();", :onChange => "toCurrency(this); updateCurrentMonthly(#{account.id});" %>
+    </td>
+    <td class="right bold" id="monthly_<%= "#{account.id}-#{bucket_row.id}" %>"><%= number_to_currency(bucket_row.monthly_amount) %></td>
+    <% @user.paychecks.each do |p| %>
+      <td>
+        <% 
+        this_style = "width: 86px; text-align: right; border-top: 0;"
+        if @user.paychecks.first != p
+          this_style << " border-left: 0;"
+        end
+        %>
+        <%= text_field_tag "#{account.id}-#{p.id}-#{bucket_row.id}", number_to_currency(@values["#{account.id}-#{p.id}-#{bucket_row.id}"]), :style => this_style, :onclick => "this.select();", :onChange => "toCurrency(this); updateBucketTotals(this);" %>
+      </td>
+    <% end %>
+    <% 0.upto(5 - @user.paychecks.length) do |x| %>
+      <td class="empty"></td>
+    <% end %>
+  </tr>

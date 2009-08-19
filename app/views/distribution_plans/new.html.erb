@@ -1,0 +1,10 @@
+<div class="sub_page">
+
+<h1>Create Income Distribution Template</h1>
+<h3 class="description">Enter all required fields below.</h3>
+
+<% form_for(@plan) do |f| -%>
+<%= render :partial => "form", :locals => { :f => f, :submit_label => "Create" } %>
+<% end -%> 
+
+</div>

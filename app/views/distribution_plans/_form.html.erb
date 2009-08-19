@@ -1,0 +1,26 @@
+<table class="form" width="98%" id="details">
+  <tr>
+    <td class="label">Name:</td>
+    <td width="285"><%= f.text_field :name, :style => "width: 275px;" %></td>
+    <td class="error" style="text-align: left;"><%= @plan.errors ? @plan.errors.on(:name) : "" %></td>
+  </tr>
+  <tr>
+    <td class="label">Income Amount:</td>
+    <td colspan="2" class="error"><%= text_field_tag :initial_amount, number_to_currency(@plan.amount), :style => "width: 125px; text-align: right;" %>
+      &nbsp;You have $15.00 left to assign
+    </td>
+  </tr>
+  <%= render :partial => "detail", :collection => @plan.distribution_plan_details %>
+</table>
+<table width="98%" class="form" style="margin-top: 0;">
+  <tr>
+    <td class="label">&nbsp;</td>
+    <td colspan="2">
+      <%= add_detail_link "Add a Bucket" %></td>
+  </tr>
+  <tr>
+    <td class="label"></td>
+    <td><%= f.submit submit_label %></td>
+    <td></td>
+  </tr>
+</table>

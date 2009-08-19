@@ -1,0 +1,21 @@
+
+<% @paycheck_to_account = paycheck_to_account %>
+<%= error_messages_for :paycheck_to_account %>
+
+<tr class="paycheck_to_account">
+<% fields_for "paycheck[paycheck_to_account_attributes][]", paycheck_to_account do |f| %>
+  <td align="right">
+    <% if paycheck_to_account.new_record? %>
+      <%= link_to_function image_tag("icon_delete.png", :border => 0), "$(this).up('.paycheck_to_account').remove()" %>
+    <% else %>
+      <%= link_to_function image_tag("icon_delete.png", :border => 0), "mark_for_destroy(this)" %>
+      <%= f.hidden_field :id, :index => nil %>
+      <%= f.hidden_field :should_destroy, :index => nil, :class => 'should_destroy' %>
+    <% end %>
+  </td>
+  <td align="left">
+    <%= f.text_field(:amount, :style => "width: 125px; text-align: right;", :value => number_to_currency(paycheck_to_account.amount), :onChange => "toCurrency(this)", :index => nil, :onclick => "this.select();") %>
+      &nbsp;<%= f.select(:account_id, @user.accounts.collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select Account'}, :index => nil) %>
+  </td>
+<% end %>
+</tr>

@@ -1,0 +1,12 @@
+<div class="sub_page">
+
+<h1>New Bucket</h1>
+<h3 class="description">Enter all required fields below.</h3>
+
+<% form_for(@bucket) do |f| -%>
+<%= f.hidden_field(:category_id, :value => 1) %>
+<%= f.hidden_field(:bucket_type, :value => "regular") %>
+<%= render :partial => "form", :locals => { :f => f, :submit_label => "Create" } %>
+<% end -%> 
+
+</div>

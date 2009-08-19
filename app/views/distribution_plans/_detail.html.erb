@@ -1,0 +1,9 @@
+<% fields_for "distribution_plan[detail_attributes][]", detail do |detail_form| %>
+  <tr class="detail">
+    <td align="right"><%= link_to_function image_tag("icon_delete.png", :border => 0), "$(this).up('.detail').remove()" %></td>
+    <td colspan="2">
+      <%= detail_form.text_field(:amount, :style => "width: 125px; text-align: right;", :value => number_to_currency(detail.amount)) %>
+      &nbsp;<%= detail_form.select(:bucket_id, @user.buckets.collect {|p| [ p.name, p.id ] }, {:include_blank => 'Select Bucket'}) %>
+      <%= detail_form.hidden_field :id, :value => detail.id %></td>
+  </tr>
+<% end %>

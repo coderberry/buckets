@@ -1,0 +1,10 @@
+<div class="sub_page">
+
+<h1>Edit Bucket</h1>
+<h3 class="description">Enter all required fields below.</h3>
+
+<% form_for(@bucket) do |f| -%>
+<%= render :partial => "form", :locals => { :f => f, :submit_label => "Update" } %>
+<% end -%> 
+
+</div>

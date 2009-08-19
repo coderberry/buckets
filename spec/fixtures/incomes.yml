@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user_id: 1
+  receive_date: 2008-03-04
+  amount: 9.99
+  description: MyString
+
+two:
+  user_id: 1
+  receive_date: 2008-03-04
+  amount: 9.99
+  description: MyString

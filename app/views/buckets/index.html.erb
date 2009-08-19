@@ -1,0 +1,87 @@
+<div class="sub_page">
+
+<table width="98%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" valign="middle"><h1 style="margin: 0; padding: 0;">My Buckets</h1></td>
+    <td align="right" valign="middle"><h3 style="margin: 0; padding: 0;" class="title"></h3></td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <h3 style="margin: 0; padding: 0;" class="description">A 'Bucket' is a place-holder for your money.</h3>
+    </td>
+  </tr>
+<table>
+
+<% form_tag :action => "update_buckets" do -%>
+<div>
+<% for account in @user.accounts %>
+
+  <div class="bucket_header">
+    <div class="bucket_title"><%= account.name %></div>
+    <div class="bucket_links"><%= submit_tag "Save Changes" %></div>
+  </div>
+  
+  <div class="spacer"></div>
+  
+  <div class="bucket_grid">
+  
+    <table cellspacing="0" cellpadding="0" border="0" class="bucket_grid">
+      <tr>
+        <th>Bucket</th>
+        <th>Balance</th>
+        <th>Monthly</th>
+        <% @user.paychecks.each do |p| %>
+          <th><%= truncate(p.name, 12) %></th>
+        <% end %>
+        <% 0.upto(5 - @user.paychecks.length) do |x| %>
+          <th>&nbsp;</th>
+        <% end %>
+      </tr>
+      <tr id="paycheck_amounts_<%= account.id %>">
+        <td style="width: 210px; height: 26px; text-align: center;" class="first">
+          <%= add_bucket_link("Add New Bucket", account.id) %>
+        </td>
+        <td style="width: 95px;">&nbsp;</td>
+        <td style="width: 95px;">&nbsp;</td>
+        <% @user.paychecks.each do |p| %>
+          <td class="hilight right bold">
+            <%= number_to_currency(p.amount) %>
+            <input type="hidden" id="paycheck_remaining_original_<%= p.id %>" value="<%= p.amount %>"/>
+          </td>
+        <% end %>
+        <% 0.upto(5 - @user.paychecks.length) do |x| %>
+          <td class="hilight empty"></td>
+        <% end %>
+      </tr>
+      <%= render :partial => "bucket_row", :collection => account.regular_buckets, :locals => { :account => account} %>
+      <tr>
+        <td class="bold first" style="height: 26px;">&nbsp;Remaining</td>
+        <td class="right bold">&nbsp;</td>
+        <td class="right bold">&nbsp;</td>
+        <% @user.paychecks.each do |p| %>
+          <td class="right hilight bold" style="width: 95px;" id="paycheck_remaining_<%= p.id %>"><%= number_to_currency(p.remaining_amount) %></td>
+        <% end %>
+        <% 0.upto(5 - @user.paychecks.length) do |x| %>
+          <td class="hilight empty"></td>
+        <% end %>
+      </tr>
+      <tr>
+        <td class="bold first" style="height: 26px;">&nbsp;Total</td>
+        <td class="right bold" id="total_current_monthly_<%= account.id %>"><%= number_to_currency(0) %></td>
+        <td class="right bold" id="total_monthly_<%= account.id %>"><%= number_to_currency(0) %></td>
+        <% @user.paychecks.each do |p| %>
+          <td class="right hilight bold" style="width: 95px;" id="paycheck_total_<%= p.id %>"><%= number_to_currency(0) %></td>
+        <% end %>
+        <% 0.upto(5 - @user.paychecks.length) do |x| %>
+          <td class="hilight empty"></td>
+        <% end %>
+      </tr>
+    </table>
+
+    <% end %>
+  
+  </div>
+
+<% end %>
+
+</div>

@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title><%= @page_title || "Buckets" %></title>
+    <%= javascript_include_tag :defaults %>
+    <%= javascript_include_tag "buckets" %>
+    <%= stylesheet_link_tag "application" %>
+  </head>
+  <body>
+  
+  <div align="center">
+    <div id="outside_container">
+      <div id="header_container" class="spacer">
+        <div id="tabs">
+          <a href="/dashboard"><img src="/images/tab_home_<%= controller.controller_name == 'dashboard' ? 'on' : 'off' %>.png" border="0"/></a>
+          <a href="/accounts"><img src="/images/tab_accounts_<%= controller.controller_name == 'accounts' ? 'on' : 'off' %>.png" border="0"/></a>
+          <a href="/paychecks"><img src="/images/tab_paychecks_<%= controller.controller_name == 'paychecks' ? 'on' : 'off' %>.png" border="0"/></a>
+          <a href="/buckets"><img src="/images/tab_buckets_<%= controller.controller_name == 'buckets' ? 'on' : 'off' %>.png" border="0"/></a>
+          <a href="/distribution_plans"><img src="/images/tab_templates_<%= controller.controller_name == 'distribution_plans' ? 'on' : 'off' %>.png" border="0"/></a>
+          <a href="/welcome/logout"><img src="/images/tab_logout_off.png" border="0"/></a>
+        </div>
+        <div id="login_status">
+          Logged in as <%= @user.full_name %>
+        </div>
+      </div>
+      <div id="content_container_no_side">
+      
+        <table cellspacing="0" cellpadding="3" border="0" width="100%" id="dashboard_table">
+          <tr>
+            <td valign="top">
+            
+              <%= yield :layout %>
+            
+            </td>
+          </tr>
+        </table>
+        
+      </div>
+      <div id="footer_container">
+        Terms of Service | Privacy Policy | Contact Us
+      </div>
+    
+    </div>
+  </div>
+
+  </body>
+</html>

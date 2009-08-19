@@ -1,0 +1,28 @@
+one:
+  id: 1
+  category_id: one
+  account_id: checking
+  name: Groceries
+  balance: 100.00
+  bucket_type: Standard
+two:
+  id: 2
+  category_id: one
+  account_id: checking
+  name: Fun Money
+  balance: 50.00
+  bucket_type: Standard
+three:
+  id: 3
+  category_id: one
+  account_id: checking
+  name: Rent
+  balance: 900.00
+  bucket_type: Standard
+four:
+  id: 4
+  category_id: one
+  account_id: checking
+  name: Visa Card
+  balance: 2185.38
+  bucket_type: Debt

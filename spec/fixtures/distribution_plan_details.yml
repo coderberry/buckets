@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  distribution_plan_id: 1
+  amount: 9.99
+  bucket_id: 1
+
+two:
+  distribution_plan_id: 1
+  amount: 9.99
+  bucket_id: 1

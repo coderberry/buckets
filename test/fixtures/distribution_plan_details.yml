@@ -1,0 +1,20 @@
+one:
+  id: 1
+  distribution_plan_id: 1
+  amount: 35.00
+  bucket_id: 1
+two:
+  id: 2
+  distribution_plan_id: 1
+  amount: 200.00
+  bucket_id: 2
+three:
+  id: 3
+  distribution_plan_id: 1
+  amount: 1000.00
+  bucket_id: 4
+four:
+  id: 4
+  distribution_plan_id: 2
+  amount: 1235.00
+  bucket_id: 3

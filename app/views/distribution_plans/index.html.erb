@@ -1,0 +1,42 @@
+<div class="sub_page">
+
+<table width="98%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" valign="middle"><h1 style="margin: 0; padding: 0;">Income Templates</h1></td>
+    <td align="right" valign="middle"><h3 style="margin: 0; padding: 0;" class="title"></h3></td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <h3 style="margin: 0; padding: 0;" class="description">...</h3>
+    </td>
+  </tr>
+<table>
+
+<table width="98%" class="grid">
+<% for plan in @user.distribution_plans %>
+  <% unless @user.distribution_plans.first == plan %>
+  <tr>
+    <td colspan="3">
+      <div class="hr"></div>
+    </td>
+  </tr>
+  <% end %>
+  <tr>
+    <td valign="bottom" colspan="2"><h3 class="title"><%= plan.name %></h3></td>
+    <td valign="bottom" style="text-align: right;"><h4 class="title"><%= link_to "Modify", edit_distribution_plan_path(plan) %></h4></td>
+  </tr>
+  <% for detail in plan.distribution_plan_details %>
+  <tr>
+    <td valign="middle" width="14"><img src="/images/bucket_small.png" border="0" /></td>
+    <td valign="middle">asdf</td>
+    <td valign="middle" style="text-align: right;"><%= number_to_currency(detail.amount) %></td>
+  </tr>
+  <% end %>
+  <tr>
+    <td valign="bottom" colspan="2">&nbsp;</td>
+    <td valign="bottom" style="text-align: right; border-top: 1px solid #aaa;"><h4 class="title">Total: <%= number_to_currency(plan.amount) %></h4></td>
+  </tr>
+<% end %>
+</table>
+
+</div>
